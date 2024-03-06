@@ -1,4 +1,4 @@
-package middlewares
+package Middlewares
 
 import (
 	"log"
@@ -11,7 +11,7 @@ func Log(f echo.HandlerFunc) echo.HandlerFunc {
 	startTime := time.Now()
 	return func(c echo.Context) error {
 		duration := time.Since(startTime)
-		log.Printf("Peticion To: %s, HandlingTime: %q", c.Request().URL, duration)
+		log.Printf("Peticion To: %s, HandlingTime: %q, Method: %q", c.Request().URL, duration, c.Request().Method)
 		return f(c)
 	}
 }

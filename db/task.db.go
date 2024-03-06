@@ -13,34 +13,30 @@ type TaskRecord struct {
 }
 
 // creamos una funcion que instancia la estructura TaskRecord para poder hacer nuevos registros en esa estructura ya que nesecitamos inicializar el mapa que contiene las tareas
-func InitTaskRecords() *TaskRecord { // esta funcion retorna un puntero a TaskRecord
+func InitTaskRecords() TaskRecord { // esta funcion retorna un puntero a TaskRecord
 	recordInstance := make(map[int]model.Task)
-	return &TaskRecord{ // retornamos la estructura TaskRecord ya inicializada
+	return TaskRecord{ // retornamos la estructura TaskRecord ya inicializada
 		RecordID: 0,
 		Tasks:    recordInstance,
 	}
 }
 
-// func crear tarea esta funcion es un metodo de la estructura TaskRecord el cual recibe un id un titulo y el contenido de la tarea
-func (TR *TaskRecord) CreateTask(id int, title, content string) model.Task { // esta retorna un objeto tarea
-	// aumentamos el valor de RecordID cada vez que hacemos un registro porque ID 1 para representar el registro numero 1 y asi consecutivamente
+// func crear tarea esta funcion es un metodo de la estructura TaskRecord que recibe un puntero a una estructura task
+func (TR *TaskRecord) CreateTask(task *model.Task) error { // esta puede retornar un error
 	TR.RecordID++
-	// creamos un objeto tarea y llenamos los campos de la struct tarea con los parametros que la funcion recibe
-	newtask := model.Task{
-		Id:      id,
-		Title:   title,
-		Content: content,
+	if task == nil {
+		return model.ErrTaskCanNotBeNil
 	}
-	// creamos una nueva llave en el mapa de tareas de TR con el valor del campo Id de el objeto tarea que estamos instanciando el cual dicha clave contiene el valor del objeto tarea que instanciamos en la funcion
-	TR.Tasks[newtask.Id] = newtask
+
+	TR.Tasks[task.Id] = *task
 
 	// por ultimo retornamos el objeto tarea que acabamos de instanciar
-	return newtask
+	return nil
 }
 
-func (TR TaskRecord) GetAllTasks() []model.Task {
+func (TR *TaskRecord) GetAllTasks() (model.Tasks, error) {
 	// Creamos un nuevo slice de tareas vacío
-	tasks := make([]model.Task, 0, len(TR.Tasks))
+	var tasks model.Tasks
 
 	// Iteramos sobre el mapa Tasks de la estructura TaskRecord
 	for _, task := range TR.Tasks {
@@ -49,14 +45,14 @@ func (TR TaskRecord) GetAllTasks() []model.Task {
 	}
 
 	// Retornamos el slice tasks que contiene todas las tareas almacenadas en TaskRecord
-	return tasks
+	return tasks, nil
 }
 
 // GetTaskByID obtiene una tarea por su ID.
 // Recibe el ID de la tarea a buscar y devuelve la tarea correspondiente si existe.
-func (TR TaskRecord) GetTaskByID(id int) (model.Task, error) {
+func (TR TaskRecord) GetTaskByID(ID int) (model.Task, error) {
 	// Buscamos la tarea en el mapa Tasks de la estructura TaskRecord con la llave o Id de la tarea
-	task, ok := TR.Tasks[id]
+	task, ok := TR.Tasks[ID]
 	if !ok {
 		// Si la tarea no existe (el ID es 0), devolvemos un error
 		return model.Task{}, model.ErrtaskDoNotExist
