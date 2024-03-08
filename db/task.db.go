@@ -55,23 +55,25 @@ func (TR TaskRecord) GetTaskByID(ID int) (model.Task, error) {
 	task, ok := TR.Tasks[ID]
 	if !ok {
 		// Si la tarea no existe (el ID es 0), devolvemos un error
-		return model.Task{}, model.ErrtaskDoNotExist
+		return task, model.ErrtaskDoNotExist
 	}
 
 	// Si la tarea existe, la devolvemos
 	return task, nil
 }
 
-func (TR *TaskRecord) UpdateTask(ID int, title, content string) (model.Task, error) {
-	task, ok := TR.Tasks[ID]
-	if !ok {
-		return model.Task{}, model.ErrCanotUpatetask
+func (TR *TaskRecord) UpdateTask(ID int, t *model.Task) error {
+	if t == nil {
+		return model.ErrTaskCanNotBeNil
 	}
 
-	task.Title = title
-	task.Content = content
+	if _, ok := TR.Tasks[ID]; !ok {
+		return model.ErrtaskDoNotExist
+	}
 
-	return task, nil
+	TR.Tasks[ID] = *t
+
+	return nil
 }
 
 func (TR *TaskRecord) DeleteTask(ID int) error {

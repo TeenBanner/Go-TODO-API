@@ -8,6 +8,6 @@ type DB interface {
 	CreateTask(task *model.Task) error
 	GetAllTasks() (model.Tasks, error)
 	GetTaskByID(id int) (model.Task, error)
-	UpdateTask(ID int, title, content string) (model.Task, error)
+	UpdateTask(ID int, t *model.Task) error
 	DeleteTask(ID int) error
 }

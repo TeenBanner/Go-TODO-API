@@ -13,10 +13,13 @@ func main() {
 	db := db.InitTaskRecords()
 
 	routes.RouteTask(e, &db)
+	routes.UpdateTask(e, &db)
+	routes.DeleteTask(e, &db)
+	routes.GetByIdTask(e, &db)
 
 	log.Println("Server Listening at http://127.0.0.1:1234/")
 	log.Printf("Routes available: \n")
-	log.Println("Server availabe routes http://127.0.0.1:1234/API/v1/todo/newtasks")
+	log.Printf("Server availabe routes GET: http://127.0.0.1:1234/API/v1/todo/tasks \nPOST: http://127.0.0.1:1234/API/v1/todo/tasks/newTasks \nPUT: http://127.0.0.1:1234/API/v1/todo/tasks")
 
 	err := e.Start(":1234")
 	if err != nil {
