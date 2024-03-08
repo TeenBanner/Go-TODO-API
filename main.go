@@ -1,21 +1,24 @@
 package main
 
 import (
+	"github.com/simple-rest-API/model"
 	"log"
 
 	"github.com/labstack/echo/v4"
-	"github.com/simple-rest-API/db"
-	"github.com/simple-rest-API/routes"
 )
+
+func makeDBinstances() (map[int]model.Task, map[int]model.User) {
+	TaskMapInstance := make(map[int]model.Task)
+	UserMapInstance := make(map[int]model.User)
+
+	return TaskMapInstance, UserMapInstance
+}
 
 func main() {
 	e := echo.New()
-	db := db.InitTaskRecords()
-
-	routes.RouteTask(e, &db)
-	routes.UpdateTask(e, &db)
-	routes.DeleteTask(e, &db)
-	routes.GetByIdTask(e, &db)
+	/* No Descomentar hasta tener listas las rutas
+	dbt, dbu := makeDBinstances()
+	db := db.NewDBInstance(dbt, dbu)*/
 
 	log.Println("Server Listening at http://127.0.0.1:1234/")
 	log.Printf("Routes available: \n")

@@ -15,10 +15,12 @@ type TaskRecord struct {
 // creamos una funcion que instancia la estructura TaskRecord para poder hacer nuevos registros en esa estructura ya que nesecitamos inicializar el mapa que contiene las tareas
 func InitTaskRecords() TaskRecord { // esta funcion retorna un puntero a TaskRecord
 	recordInstance := make(map[int]model.Task)
-	return TaskRecord{ // retornamos la estructura TaskRecord ya inicializada
+	Tr := TaskRecord{
 		RecordID: 0,
 		Tasks:    recordInstance,
 	}
+	return Tr // retornamos la estructura TaskRecord ya inicializada
+
 }
 
 // func crear tarea esta funcion es un metodo de la estructura TaskRecord que recibe un puntero a una estructura task
